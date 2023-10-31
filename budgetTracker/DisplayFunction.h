@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include "DoublyLinkedList.h"
+#include<fstream>
+#include<string>
 
 using namespace std;
 
@@ -9,11 +11,124 @@ DoublyLinkedList dll1;
 class DisplayFunction {
 public:
     int select_4;
-	void LogInData(){ cout << "This is LogInData" << endl; } // Login and createAccount functions should call here
-	void Login(){ cout << "This is Login" << endl; }
-	void CreateAccount(){ cout << "This is CreateAccount" << endl; }
+	void LogInData(){ 
+        int select_1;
 
-	void savingData(){ cout << "This is savingData" << endl; } //user details
+        cout << "Select an Option" << endl;
+        cout << "1.Log In" << endl;
+        cout << "2.Create a New Account" << endl;
+        cout << "ttttttt";
+        cin >> select_1;
+
+        system("cls");
+        switch (select_1)
+        {
+        case 1:
+            Login();
+            break;
+
+        case 2:
+            createNewAccount();
+            break;
+
+        default:
+            system("cls");
+            cout << "Enter a valid option" << endl;
+            LogInData();
+        }
+    }
+	void Login(){ 
+        int count = 0;
+        string username, password, uName, uPass;
+        cout << "LOG IN" << endl;
+        cout << "Username: ";
+        cin >> username;
+        cout << "Password: ";
+        cin >> password;
+        system("cls");
+
+        ifstream read("records.txt");//ifstream is used to read the data from the file
+
+        while (read >> uName >> uPass)//read is the object name
+        {
+            if (uName == username)
+            {
+                count = 1;
+            }
+        }
+        read.close();
+
+        if (count == 1)
+        {
+            cout << "Login Successfull!" << endl;
+        }
+        else
+        {
+            cout << "Login Failed" << endl;
+            cout << "Please check your Username and Password" << endl;
+            LogInData();
+        }
+    }
+	void createNewAccount(){ 
+        string uGoodName, uGender, uOccupation, uUsername, uPassword;
+        int uAge;
+        system("cls");
+
+        cout << "Enter your Good name: " << endl;
+        cin >> uGoodName;
+        cout << "Enter your age: " << endl;
+        cin >> uAge;
+        cout << "Enter your gender (Male/Female): " << endl;
+        cin >> uGender;
+        cout << "Enter your occupation: " << endl;
+        cin >> uOccupation;
+        cout << "Enter a Username" << endl;
+        cin >> uUsername;
+        cout << "Enter Password" << endl;
+        cin >> uPassword;
+
+        ofstream input("records.txt", ios::app);
+        input << uGoodName << " " << uAge << " " << uGender << " " << uOccupation << " " << uUsername << " " << uPassword << endl;
+        system("cls");
+        cout << "Registration Successfull!" << endl;
+        LogInData();
+    }
+
+	void savingData(){
+        double mon_Salary; //monthly salary of the user
+        double save_Money; //how much money does user want to save
+        double gen_Expenses; //basic expenses that user got
+        double ot_Income; //other incomes instead of the salary    
+        double daily_exp;
+        int daysOfMonth;
+        string goal_description;
+        char goal_response;
+
+        cout << "What is your goal?(How much money do you want to save for a month): ";
+        cin >> save_Money;
+        cout << "Add a description about your goal: ";
+        cin >> goal_description;
+
+        cout << "Enter your current monthly salary: ";
+        cin >> mon_Salary;
+        cout << "General income of the month except monthly salary:";
+        cin >> ot_Income;
+
+        daily_exp = ((mon_Salary + ot_Income) - (save_Money)) / 30; //what is the meaning of gen expenses 
+        system("cls");
+
+        cout << "Amount of money you can spend for a day to achieve your goal: " << daily_exp << endl;
+
+        cout << "Do you want to set the goal(y/n): ";
+        cin >> goal_response;
+
+        if (goal_response == 'y' || goal_response == 'Y') {
+           
+        }
+        else if (goal_response == 'n' || goal_response == 'N') {
+            InsertData();
+        }
+    } //user details
 	
 	void op_Data(){ cout << "This is op_Data" << endl; } //taking users options to an action
 
@@ -50,6 +165,8 @@ public:
         cout << "2.Delete Data" << endl;
         cout << "3.Find Data" << endl;
         cout << "4.Print Data" << endl;//Modify categories seperately
+        cout << "5.Set a Goal" << endl;
+        cout << "6.Exit" << endl;
         
         cin >> select_2;
 
@@ -150,7 +267,10 @@ public:
             cout << "PRINT DATA" <<endl;
             dll1.PrintData();
             break;
-
+        case 5:
+            cout << "SET A GOAL" << endl;
+            savingData();
+            break;
         case 6:
             break;
         }
