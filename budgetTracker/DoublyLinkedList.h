@@ -9,38 +9,62 @@ private:
 	Node* tail;
 	int size;
 public:
+	int d = 0, vTransport = 0, vFood = 0, vBills = 0, vClothing = 0, vShopping = 0,
+		vEducation = 0, vHealth = 0, vSocial = 0, vBeauty = 0, vOther = 0;
+
 	DoublyLinkedList() {
 		head = NULL;
 		tail = NULL;
 		size = 0;
+	}
+	void CreateNodes(int daysOfmonth) {
+		for (int i = 0; i < daysOfmonth; i++) {
+			d = i+1;
+			Node* temp = new Node(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);	
+			if (head == NULL) {
+				head = temp;
+				tail = temp;
+				size++;
+			}
+			else {
+				tail->next = temp;
+				temp->prev = tail;
+				tail = temp;
+				tail->next = NULL;
+				size++;
+			}
+		}
+		
 	}
 	void InsertFirst(int d, int vFood, int vTransport, int vBills, int vClothing, int vShopping, int vEducation, int vHealth, int vSocial, int vBeauty, int vOther) {
 		Node* temp = new Node(d,vFood,vTransport,vBills,vClothing,vShopping,vEducation,vHealth,vSocial,vBeauty,vOther);
 		if (head == NULL) {
 			head = temp;
 			tail = temp;
-			size++;
+			//size++;
 		}
 		else {
 			temp->next = head;
 			head->prev = temp;
 			head = temp;
-			size++;
+
+			//size++;
 		}
+
 	}
 	void InsertLast(int d, int vFood, int vTransport, int vBills, int vClothing, int vShopping, int vEducation, int vHealth, int vSocial, int vBeauty, int vOther) {
 		Node* temp = new Node(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);
 		if (head == NULL) {
 			head = temp;
 			tail = temp;
-			size++;
+			//size++;
 		}
 		else {
 			tail->next = temp;
 			temp->prev = tail;
 			tail = temp;
 			tail->next = NULL;
-			size++;
+			//size++;
 		}
 	}
 	void InsertAt(int d, int vFood, int vTransport, int vBills, int vClothing, int vShopping, int vEducation, int vHealth, int vSocial, int vBeauty, int vOther) {
@@ -49,8 +73,9 @@ public:
 		}
 		else if (d == 1) {
 			InsertFirst(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);
+			
 		}
-		else if (d == size+1) {
+		else if (d == size) {
 			InsertLast(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);
 		}
 		else {
@@ -63,7 +88,7 @@ public:
 			temp->prev = current;
 			current->next = temp;
 			(temp->next)->prev = temp;
-			size++;
+			//size++;
 			Node* currentNew = head;
 			for (int i = 0; i < size; i++)
 			{
@@ -91,6 +116,7 @@ public:
 				delete temp;
 				size--;
 			}
+
 		}
 	}
 	void DeleteLast() {
@@ -164,10 +190,12 @@ public:
 			cout << "Other:" << current->Other << endl;
 			cout << "Total expense of the day:" << (current->Food+current->Transport+current->Bills+current->Clothing+current->Shopping+
 				current->Education+current->Health+current->Social+current->Beauty+current->Other) << endl;
+			cout << " " << endl;
 	
 			current = current->next;
 		}
-		cout << endl;
+		cout<<endl;
+		cout << "" << size << endl;
 		
 	}
 };
