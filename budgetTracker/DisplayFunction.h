@@ -71,9 +71,9 @@ public:
     }
 	void createNewAccount(){ 
         string uGoodName, uGender, uOccupation, uUsername, uPassword;
-        int uAge;
+        int uAge,yr, select_3,daysOfMonth = 0;
         system("cls");
-
+        /*
         cout << "Enter your Good name: " << endl;
         cin >> uGoodName;
         cout << "Enter your age: " << endl;
@@ -82,16 +82,47 @@ public:
         cin >> uGender;
         cout << "Enter your occupation: " << endl;
         cin >> uOccupation;
-        cout << "Enter a Username" << endl;
+        */
+        cout << "Select the number of the option that you want to select" << endl;
+        cout << "Enter the year:";
+        cin >> yr;
+        cout << "Select the month that you want to enter the data" << endl;
+        cout << "1.January" << endl;
+        cout << "2.Feb" << endl;
+        cout << "3.March" << endl;
+        cout << "4.April" << endl;
+        cout << "5.May" << endl;
+        cout << "6.June" << endl;
+        cout << "7.July" << endl;
+        cout << "8.Aug" << endl;
+        cout << "9.Sept" << endl;
+        cout << "10.Oct" << endl;
+        cout << "11.Nov" << endl;
+        cout << "12.Dec" << endl;
+        cin >> select_3;
+
+        if (select_3 == 1 || select_3 == 3 || select_3 == 5 || select_3 == 7 || select_3 == 8 || select_3 == 10 || select_3 == 12)
+            daysOfMonth = 31;
+        else if (select_3 == 4 || select_3 == 6 || select_3 == 9 || select_3 == 11)
+            daysOfMonth = 30;
+        else if (select_3 == 2) {
+            if ((yr % 4 == 0 && yr % 100 != 0) || (yr % 400 == 0))
+                daysOfMonth = 29;
+            else
+                daysOfMonth = 28;
+        }
+        dll1.CreateNodes(daysOfMonth);
+
+        /*out << "Enter a Username" << endl;
         cin >> uUsername;
         cout << "Enter Password" << endl;
-        cin >> uPassword;
+        cin >> uPassword;*/
 
-        ofstream input("records.txt", ios::app);
-        input << uGoodName << " " << uAge << " " << uGender << " " << uOccupation << " " << uUsername << " " << uPassword << endl;
-        system("cls");
+        //ofstream input("records.txt", ios::app);
+        //input << uGoodName << " " << uAge << " " << uGender << " " << uOccupation << " " << uUsername << " " << uPassword << endl;
+        //system("cls");
         cout << "Registration Successfull!" << endl;
-        LogInData();
+        //LogInData();
     }
 
 	void savingData(){

@@ -4,9 +4,9 @@ using namespace std;
 
 int main()
 {
-    //DoublyLinkedList dll;
     DisplayFunction df;
+    df.createNewAccount();
     df.InsertData();
-    //dll1.PrintData();
+    
 }
 
