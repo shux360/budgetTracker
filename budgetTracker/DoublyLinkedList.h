@@ -13,17 +13,25 @@ private:
 	int size;
 public:
 	int d = 0, vTransport = 0, vFood = 0, vBills = 0, vClothing = 0, vShopping = 0,
-		vEducation = 0, vHealth = 0, vSocial = 0, vBeauty = 0, vOther = 0;
+		vEducation = 0, vHealth = 0, vSocial = 0, vBeauty = 0, vOther = 0, DOM = 0;
 
 	DoublyLinkedList() {
 		head = NULL;
 		tail = NULL;
 		size = 0;
 	}
-	void CreateNodes(int daysOfmonth) {
-		for (int i = 0; i < daysOfmonth; i++) {
-			d = i+1;
-			Node* temp = new Node(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);	
+
+	int getdaysofmonth(int dom)
+	{
+		//int DOM;
+		DOM = dom;
+		return DOM;
+	}
+
+	void CreateNodes(int DaysOfmonth) {
+		for (int i = 0; i < DaysOfmonth; i++) {
+			d = i + 1;
+			Node* temp = new Node(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);
 			if (head == NULL) {
 				head = temp;
 				tail = temp;
@@ -37,28 +45,30 @@ public:
 				size++;
 			}
 		}
-		
+
 	}
 	void InsertFirst(int d, int vFood, int vTransport, int vBills, int vClothing, int vShopping, int vEducation, int vHealth, int vSocial, int vBeauty, int vOther) {
 		Node* temp = new Node(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);
 		if (head == NULL) {
 			head = temp;
 			tail = temp;
-			size++;
+			//size++;
 		}
 		else {
 			temp->next = head->next;
 			(head->next)->prev = temp;
 			head = temp;
-			size++;
+
+			//size++;
 		}
+
 	}
 	void InsertLast(int d, int vFood, int vTransport, int vBills, int vClothing, int vShopping, int vEducation, int vHealth, int vSocial, int vBeauty, int vOther) {
 		Node* temp = new Node(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);
 		if (head == NULL) {
 			head = temp;
 			tail = temp;
-			size++;
+			//size++;
 		}
 		else {
 			/*tail->next = temp;
@@ -72,7 +82,7 @@ public:
 			tail->prev = temp;
 			tail = temp;
 			tail->next = NULL;
-			//size++;
+
 		}
 	}
 	void InsertAt(int d, int vFood, int vTransport, int vBills, int vClothing, int vShopping, int vEducation, int vHealth, int vSocial, int vBeauty, int vOther) {
@@ -83,9 +93,9 @@ public:
 		}*/
 		if (d == 1) {
 			InsertFirst(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);
-			
+
 		}
-		else if (d == size) {
+		else if (d == DOM) {
 			InsertLast(d, vFood, vTransport, vBills, vClothing, vShopping, vEducation, vHealth, vSocial, vBeauty, vOther);
 
 		}
@@ -99,7 +109,7 @@ public:
 			temp->prev = current;
 			current->next = temp;
 			(temp->next)->prev = temp;
-			size++;
+			//size++;
 			Node* currentNew = head;
 			for (int i = 0; i < size; i++)
 			{
@@ -128,6 +138,7 @@ public:
 				delete temp;
 				size--;
 			}
+
 		}
 	}
 	void DeleteLast() {
@@ -183,14 +194,14 @@ public:
 			}
 		}
 	}
-	void AddDatatoPreviousNode(string select, int dy)
+	void AddDatatoPreviousNode(string select,int dy)
 	{
 		Node* current = head;
 		for (int i = 0; i < dy - 1; i++) {
 			current = current->next;
 		}
 		char option;
-		int fd, trans, bill, cloth, shop, ed, heal, socio, beau, oth;
+		int fd, trans,bill, cloth,shop,ed,heal,socio,beau,oth;
 		if (select == "food")
 		{
 			if (current->Food != 0)
@@ -213,7 +224,7 @@ public:
 					cout << "Enter a valid option" << endl;
 				}
 			}
-			else if (current->Food == 0)
+			else if(current->Food == 0)
 			{
 				cout << "Enter the expense on food:";
 				cin >> fd;
@@ -499,7 +510,7 @@ public:
 
 	void PrintDataofoneDate(int Dy) {
 		Node* current = head;
-		for (int i = 0; i < Dy - 1; i++)
+		for (int i = 0; i < Dy-1; i++)
 		{
 			current = current->next;
 		}
@@ -525,7 +536,7 @@ public:
 
 	}
 
-
+	
 	void PrintData() {
 		Node* current = head;
 		for (int i = 0; i < size; i++)
@@ -541,14 +552,14 @@ public:
 			cout << "Social:" << current->Social << endl;
 			cout << "Beauty:" << current->Beauty << endl;
 			cout << "Other:" << current->Other << endl;
-			cout << "Total expense of the day:" << (current->Food+current->Transport+current->Bills+current->Clothing+current->Shopping+
-				current->Education+current->Health+current->Social+current->Beauty+current->Other) << endl;
+			cout << "Total expense of the day:" << (current->Food + current->Transport + current->Bills + current->Clothing + current->Shopping +
+				current->Education + current->Health + current->Social + current->Beauty + current->Other) << endl;
 			cout << " " << endl;
-	
+
 			current = current->next;
 		}
-		cout<<endl;
+		cout << endl;
 		cout << "" << size << endl;
-		
+
 	}
 };
