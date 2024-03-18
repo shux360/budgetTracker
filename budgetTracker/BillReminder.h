@@ -2,29 +2,13 @@
 #pragma warning(disable : 4996)
 #include <iostream>
 #include <ctime>
-#include <cmath>
-#include <iomanip>
-#include <sstream>
 
 using namespace std;
 
-class Bill {
-public:
+struct Bill {
     string name;
     double amount;
     time_t dueDate;
-
-    // Default constructor
-    Bill() : name(""), amount(0.0), dueDate(0) {}
-
-    Bill(const string& n, double a, time_t d) : name(n), amount(a), dueDate(d) {}
-};
-
-class CompareBills {
-public:
-    bool operator()(const Bill& lhs, const Bill& rhs) const {
-        return lhs.dueDate > rhs.dueDate; // Min heap based on due date
-    }
 };
 
 class BillManager {
@@ -33,44 +17,21 @@ private:
     Bill bills[MAX_BILLS];
     int size;
 
-    void heapifyUp(int index) {
-        while (index > 0) {
-            int parent = (index - 1) / 2;
-            if (CompareBills()(bills[parent], bills[index])) {
-                break;
-            }
-            swap(bills[parent], bills[index]);
-            index = parent;
-        }
-    }
-
-    void heapifyDown(int index) {
-        while (2 * index + 1 < size) {
-            int leftChild = 2 * index + 1;
-            int rightChild = 2 * index + 2;
-            int smallest = leftChild;
-            if (rightChild < size && CompareBills()(bills[rightChild], bills[leftChild])) {
-                smallest = rightChild;
-            }
-            if (CompareBills()(bills[index], bills[smallest])) {
-                break;
-            }
-            swap(bills[index], bills[smallest]);
-            index = smallest;
-        }
-    }
-
 public:
     BillManager() : size(0) {}
 
     void checkUpcomingBills() {
-        cout << "Upcoming Bills:\n";
+        time_t currentTime = time(nullptr);
+
+        cout << "==============================================" << endl;
+        cout << "|----------------UPCOMING BILLS--------------|" << endl;
+        cout << "==============================================" << endl;
+        cout << " " << endl;
 
         for (int i = 0; i < size; ++i) {
             const Bill& bill = bills[i];
 
             // Calculate days remaining for the due date
-            time_t currentTime = time(nullptr);
             double secondsRemaining = bill.dueDate - currentTime;
             double daysRemaining = ceil(secondsRemaining / (60 * 60 * 24));
 
@@ -79,39 +40,61 @@ public:
             char buffer[11];
             strftime(buffer, sizeof(buffer), "%Y-%m-%d", dueDateStruct);
 
-            cout << "Name: " << bill.name << endl;
-            cout << "Amount: " << bill.amount << endl;
-            cout << "Due Date: " << buffer << endl;
-            cout << "Days Remaining: " << daysRemaining << " days" << endl;
+            cout << "-------------------------------------------" << endl;
+            cout << "|BILL NO        : " << i + 1 << endl;
+            cout << "-------------------------------------------" << endl;
+            cout << "|Name          : " << bill.name << endl;
+            cout << "-------------------------------------------" << endl;
+            cout << "|Amount        : " << bill.amount << endl;
+            cout << "-------------------------------------------" << endl;
+            cout << "|Due Date      : " << buffer << endl;
+            cout << "-------------------------------------------" << endl;
+            cout << "|Days Remaining: " << daysRemaining << endl;
+            cout << "-------------------------------------------" << endl;
+            cout << "" << endl;
+            cout << "" << endl;
         }
     }
 
     void addBill() {
         if (size < MAX_BILLS) {
             // Get bill information from the user
-            string name;
-            double amount;
-            string dueDateStr;
+            Bill newBill;
 
-            cout << "Enter bill information\n";
+            cout << "======================================================" << endl;
+            cout << "|----------------ENTER BILL INFORMATION--------------|" << endl;
+            cout << "======================================================" << endl;
+            cout << "" << endl;
             cout << "Name of the bill: ";
-            cin >> name;
+            cin >> newBill.name;
 
             cout << "Amount: ";
-            cin >> amount;
+            cin >> newBill.amount;
 
             cout << "Due Date (YYYY-MM-DD): ";
+            string dueDateStr;
             cin >> dueDateStr;
+            system("cls");
 
             // Convert user-provided due date to timestamp
             tm dueDateStruct = {};
-            istringstream(dueDateStr) >> get_time(&dueDateStruct, "%Y-%m-%d");
-            time_t dueDate = mktime(&dueDateStruct);
+            sscanf(dueDateStr.c_str(), "%d-%d-%d", &dueDateStruct.tm_year, &dueDateStruct.tm_mon, &dueDateStruct.tm_mday);
+            dueDateStruct.tm_year -= 1900;
+            dueDateStruct.tm_mon -= 1;
+            newBill.dueDate = mktime(&dueDateStruct);
 
-            // Add the user-provided bill to the array and maintain the heap property
-            bills[size] = Bill(name, amount, dueDate);
-            heapifyUp(size);
+            // Add the user-provided bill to the array
+            bills[size] = newBill;
             size++;
+
+            // Sort bills based on dueDate in ascending order (bubble sort algorithm)
+            for (int i = 0; i < size - 1; ++i) {
+                for (int j = i + 1; j < size; ++j) {
+                    if (bills[i].dueDate > bills[j].dueDate) {
+                        swap(bills[i], bills[j]);
+                    }
+                }
+            }
         }
         else {
             cout << "Cannot add more bills. Maximum limit reached.\n";
@@ -123,27 +106,33 @@ public:
     }
 
     void billReminder() {
-        BillManager billManager;
         int choice;
 
         do {
-            cout << "1. Add Bill Reminder\n";
-            cout << "2. Display Existing Bill Reminders\n";
-            cout << "3. Exit\n";
+            cout << "----------------------------------------------" << endl;
+            cout << "| 1\t|Add Bill Reminder                   |" << endl;
+            cout << "| 2\t|Display Existing Bill Reminders     |" << endl;
+            cout << "| 3\t|Exit                                |" << endl;
+            cout << "----------------------------------------------" << endl;
+            cout << "|Insert an option (1,2 or 3)                 |" << endl;
+            cout << "----------------------------------------------" << endl;
+            cout << "" << endl;
             cout << "Enter your choice: ";
             cin >> choice;
+            system("cls");
 
             switch (choice) {
             case 1:
-                billManager.addBill();
+                addBill();
                 break;
 
             case 2:
-                billManager.displayQueue();
+                displayQueue();
                 break;
 
             case 3:
                 cout << "Exiting the program.\n";
+                system("cls");
                 break;
 
             default:
@@ -153,4 +142,3 @@ public:
         } while (choice != 3);
     }
 };
-
