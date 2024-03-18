@@ -1,4 +1,4 @@
-<h1 align="center" id="title">Data Structures and Algorithms : Budget Tracker</h1>
+<h1 align="left" id="title">Data Structures and Algorithms : Budget Tracker</h1>
 
 <p id="description">We're excited to share our project with the world and invite you to join us in exploring the endless possibilities at the intersection of technology and finance which addresses a real-world need 💡✨</p>
 
